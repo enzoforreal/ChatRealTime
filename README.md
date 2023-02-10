@@ -1,6 +1,6 @@
 # ChatRealTime
 
- Voici les fonctionnalités de base que vous pourriez implémenter pour une application de messagerie instantanée en langage C :
+ Voici les fonctionnalités  de cette  messagerie instantanée en langage C :
 
 Connexion de clients : implémentez une méthode pour permettre à un client de se connecter au serveur, en utilisant un protocole de communication tel que TCP/IP.
 
