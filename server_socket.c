@@ -94,16 +94,7 @@ void *handle_client(void *arg)
 int main(int argc, char const *argv[])
 {
 
-    gtk_init(&argc, &argv);
-    GtkWidget *window;
-    GtkWidget *button;
-
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    button = gtk_button_new_with_label("Hello World!");
-    gtk_widget_show_all(window);
-    gtk_main();
-
-    gtk_container_add(GTK_CONTAINER(window), button);
+    
     int server_socket, client_socket;
     struct sockaddr_in server_address, client_address;
     socklen_t client_address_size;
