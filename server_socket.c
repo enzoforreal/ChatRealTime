@@ -119,7 +119,7 @@ int main(int argc, char const *argv[])
     {
         perror("Failed to bind socket");
         return 1;
-    }
+    }  
 
     // Listen for incoming connections
     if (listen(server_socket, MAX_CLIENTS) < 0)
