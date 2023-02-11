@@ -1,9 +1,11 @@
 # ChatRealTime
 
- Voici les fonctionnalités  de cette  messagerie instantanée et ses features :
-
-Connexion de clients : implémentez une méthode pour permettre à un client de se connecter au serveur, en utilisant un protocole de communication tel que TCP/IP.
-
+ 1- les fonctionnalités deja developper de cette  messagerie instantanée  :
+ 
+ Connexion de clients : implémentez une méthode pour permettre à un client de se connecter au serveur, en utilisant un protocole de communication tel que TCP/IP.
+ 
+ 2-les features a developper :
+ 
 Déconnexion de clients : implémentez une méthode pour permettre à un client de se déconnecter du serveur en tout temps.
 
 Envoi et réception de messages : implémentez une méthode pour permettre à un client d'envoyer un message à un autre client connecté au serveur, et une méthode pour permettre à un client de recevoir les messages envoyés par d'autres clients.
@@ -15,8 +17,6 @@ Gestion des erreurs : implémentez des mécanismes pour gérer les erreurs et le
 Transmission de fichiers : implémentez une méthode pour permettre à un client d'envoyer des fichiers à un autre client connecté au serveur, et une méthode pour permettre à un client de recevoir des fichiers envoyés par d'autres clients.
 
 Sécurité : implémentez des mécanismes de sécurité tels que la cryptographie pour garantir la confidentialité et l'intégrité des données transmises entre le client et le serveur.
-
-Ces fonctionnalités de base vous permettront de développer une application de messagerie instantanée fonctionnelle et robuste en utilisant le langage C. Vous pourriez également considérer d'ajouter d'autres fonctionnalités en fonction de vos besoins et de votre créativité.
 
 Pour implémenter la connexion de clients, vous pouvez utiliser la bibliothèque socket de C. Vous pouvez définir une socket sur le serveur pour écouter les connexions entrantes et une socket pour chaque client qui se connecte au serveur. Lorsqu'un client se connecte, vous pouvez créer un thread pour gérer la communication entre le client et le serveur.
 
