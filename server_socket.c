@@ -6,11 +6,14 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <pthread.h>
-///#include <gtk/gtk.h>
+#include <SDL2/SDL.h>
+
 
 #define PORT 8080
 #define MAX_CLIENTS 100
 #define BUFFER_SIZE 1024 + 20 + 1 
+
+const int WIDTH = 800 , HEIGHT = 600;
 
 int clients[MAX_CLIENTS];
 int client_count = 0;
@@ -23,8 +26,8 @@ void *handle_client(void *arg)
     char buffer[BUFFER_SIZE];
     int received, sent;
 
-    char username[20];
-    username[received] = '\0';
+    char username[20] = {0};
+    username[20] = '\0';
     buffer[20] = ':';
 
     //Add the username to the message buffer
@@ -53,8 +56,8 @@ void *handle_client(void *arg)
             printf("Client disconnected\n");
             exit_flag = 1 ;
         }
-
-        strcat(buffer,"\n");
+        strncpy(buffer,username,20);
+        strcat(buffer,": \n");
 
         // Broadcast message to all clients
         if(!exit_flag){
@@ -91,14 +94,23 @@ void *handle_client(void *arg)
     return NULL;
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
+        
+        if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
+        {
+            printf("SDL_Init Error: %s\n", SDL_GetError());
+            return 1;
+        }
 
-    
-    int server_socket, client_socket;
-    struct sockaddr_in server_address, client_address;
-    socklen_t client_address_size;
-    pthread_t thread;
+        SDL_Quit();
+
+
+
+            int server_socket,client_socket;
+        struct sockaddr_in server_address, client_address;
+        socklen_t client_address_size;
+        pthread_t thread;
 
     // Create server socket
     server_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -154,6 +166,8 @@ int main(int argc, char const *argv[])
         }
         pthread_mutex_unlock(&clients_mutex);
     }
+
+    
 
     close(server_socket);
     return 0;
