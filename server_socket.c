@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #include <pthread.h>
 #include <SDL2/SDL.h>
+#include "includes/window.h"
 
 
 #define PORT 8080
@@ -96,17 +97,6 @@ void *handle_client(void *arg)
 
 int main(int argc, char *argv[])
 {
-        
-        if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
-        {
-            printf("SDL_Init Error: %s\n", SDL_GetError());
-            return 1;
-        }
-
-        SDL_Quit();
-
-
-
             int server_socket,client_socket;
         struct sockaddr_in server_address, client_address;
         socklen_t client_address_size;
@@ -152,6 +142,29 @@ int main(int argc, char *argv[])
             perror("Failed to accept incoming connection");
             continue;
         }
+        
+
+        Window *window = CreateWindow();
+        int quit = 0;
+        SDL_Event event;
+
+        while (!quit)
+        {
+            while (SDL_PollEvent(&event))
+            {
+            if (event.type == SDL_QUIT)
+            {
+                quit = 1;
+            }
+            }
+            SDL_RenderClear(window->renderer);
+            SDL_RenderPresent(window->renderer);
+        }
+
+        DestroyWindow(window);
+        SDL_Quit();
+
+
 
         // Add client to list and start handling it
         pthread_mutex_lock(&clients_mutex);
@@ -167,7 +180,7 @@ int main(int argc, char *argv[])
         pthread_mutex_unlock(&clients_mutex);
     }
 
-    
+   
 
     close(server_socket);
     return 0;
