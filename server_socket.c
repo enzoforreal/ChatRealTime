@@ -1,4 +1,4 @@
-//ficher server_socket.c
+// ficher server_socket.c
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,7 +21,6 @@ const int WIDTH = 800, HEIGHT = 600;
 int clients[MAX_CLIENTS];
 int client_count = 0;
 pthread_mutex_t clients_mutex = PTHREAD_MUTEX_INITIALIZER;
-
 
 void *handle_client(void *arg)
 {
@@ -53,7 +52,6 @@ void *handle_client(void *arg)
         return NULL;
     }
 
-
     while (1)
     {
         // Receive message from client
@@ -80,69 +78,65 @@ void *handle_client(void *arg)
 
         pthread_mutex_lock(&clients_mutex);
 
-       char messages[MAX_CLIENTS][BUFFER_SIZE] = {0};
+        char messages[MAX_CLIENTS][BUFFER_SIZE] = {0};
 
-    for (int i = 0; i < client_count; i++)
-    {
-        if (clients[i] != client_socket)
+        for (int i = 0; i < client_count; i++)
         {
-            // Check if username exists in messages array
-            int found = 0;
-            for (int j = 0; j < client_count; j++)
+            if (clients[i] != client_socket)
             {
-                if (strcmp(messages[j], username) == 0)
+                // Check if username exists in messages array
+                int found = 0;
+                for (int j = 0; j < client_count; j++)
                 {
-                    found = 1;
-                    break;
+                    if (strcmp(messages[j], username) == 0)
+                    {
+                        found = 1;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    // Store username in messages array
+                    strcpy(messages[i], username);
+                }
+
+                // Add username to message buffer
+                snprintf(temp_buffer, BUFFER_SIZE, "%s: %.*s", username, (int)BUFFER_SIZE - 20 - 2, buffer);
+                strcpy(buffer, temp_buffer);
+
+                sent = send(clients[i], buffer, strlen(buffer), 0);
+                if (sent < 0)
+                {
+                    perror("Failed to send data to client");
                 }
             }
-            if (!found)
-            {
-                // Store username in messages array
-                strcpy(messages[i], username);
-            }
-
-            // Add username to message buffer
-            snprintf(temp_buffer, BUFFER_SIZE, "%s: %.*s", username, (int)BUFFER_SIZE - 20 - 2, buffer);
-            strcpy(buffer, temp_buffer);
-
-            sent = send(clients[i], buffer, strlen(buffer), 0);
-            if (sent < 0)
-            {
-                perror("Failed to send data to client");
-            }
         }
-    }
 
         pthread_mutex_unlock(&clients_mutex);
 
-                // Update SDL window with messages
-        SDL_Color textColor = { 255, 255, 255, 255 };
-        SDL_Surface* textSurface = NULL;
-        SDL_Texture* textTexture = NULL;
-        SDL_Rect textRect = { 10, 10, 0, 0 };
+        // Update SDL window with messages
+        SDL_Color textColor = {255, 255, 255, 255};
+        SDL_Surface *textSurface = NULL;
+        SDL_Texture *textTexture = NULL;
+        SDL_Rect textRect = {10, 10, 0, 0};
         SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
 
-    for (int i = 0; i < client_count; i++)
-    {
-        if (strlen(messages[i]) > 0)
+        for (int i = 0; i < client_count; i++)
         {
-            textSurface = TTF_RenderText_Solid(window->font, messages[i], textColor);
-            textTexture = SDL_CreateTextureFromSurface(window->renderer, textSurface);
-            SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
-            SDL_RenderCopy(window->renderer, textTexture, NULL, &textRect);
-            SDL_FreeSurface(textSurface);
-            SDL_DestroyTexture(textTexture);
-            textRect.y += textRect.h + 10;
+            if (strlen(messages[i]) > 0)
+            {
+                textSurface = TTF_RenderText_Solid(window->font, messages[i], textColor);
+                textTexture = SDL_CreateTextureFromSurface(window->renderer, textSurface);
+                SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
+                SDL_RenderCopy(window->renderer, textTexture, NULL, &textRect);
+                SDL_FreeSurface(textSurface);
+                SDL_DestroyTexture(textTexture);
+                textRect.y += textRect.h + 10;
+            }
         }
     }
 
-
-    }
-
     SDL_RenderPresent(window->renderer);
-
-    
 
     // Remove client from list and close socket
     pthread_mutex_lock(&clients_mutex);
@@ -160,7 +154,6 @@ void *handle_client(void *arg)
 
     return NULL;
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -201,7 +194,6 @@ int main(int argc, char *argv[])
 
     // Create SDL window
     Window *window = CreateWindow();
-    
 
     while (1)
     {
@@ -240,5 +232,3 @@ int main(int argc, char *argv[])
     SDL_Quit();
     return 0;
 }
-
-   
