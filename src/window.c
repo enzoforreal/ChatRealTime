@@ -1,12 +1,15 @@
+//fichier window.c
 #include "../includes/window.h"
+#include <SDL2/SDL_ttf.h>
 
 Window *CreateWindow(){
     Window *window = malloc(sizeof(window));
 
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    if (SDL_Init(SDL_INIT_VIDEO |SDL_INIT_TIMER ) || TTF_Init() != 0)
     {
         printf("SDL_Init Error: %s\n", SDL_GetError());
         SDL_Quit();
+        TTF_Quit();
         exit(-1);
     }
 
@@ -25,6 +28,25 @@ Window *CreateWindow(){
         SDL_Quit();
         exit(-1);
     }
+
+    //chargement de la police de caractère TTF
+
+    TTF_Font *font = TTF_OpenFont("./fonts/arial.ttf", 20);
+
+    if (font == NULL)
+    {
+        printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
+        SDL_DestroyRenderer(window->renderer);
+        SDL_DestroyWindow(window->sdl_window);
+        SDL_Quit();
+        exit(EXIT_FAILURE);
+    }
+
+    window->font = font;
+
+
+
+
 
     SDL_SetRenderDrawColor(window->renderer, 0x00, 0x00, 0x00, 0xFF);
     SDL_RenderClear(window->renderer);

@@ -3,7 +3,7 @@ SRC_DIRS = src
 # INCLUDES = include
 
 
-SRCS = $(shell find $(SRC_DIRS) -name '*.c') server_socket.c
+SRCS = $(shell find $(SRC_DIRS) -name '*.c') server_socket.c window.c
 OBJS = $(SRCS:%=$(BUILD_DIR)/%.o)
 
 #CC specifies wich compiler we're using
@@ -12,7 +12,7 @@ CC = gcc
 COMPILER_FLAGS = -Wall
 
 #LINKER_FLAGS specifies the librairies we're linking against
-LINKER_FLAGS = -lSDL2
+LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lm
 
 #OBJ_NAME specifies the name of our executable
 OBJ_NAME = server_socket
