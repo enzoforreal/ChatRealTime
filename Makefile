@@ -3,7 +3,7 @@ SRC_DIRS = src
 # INCLUDES = include
 
 
-SRCS = $(shell find $(SRC_DIRS) -name '*.c') server_socket.c window.c
+SRCS = $(shell find $(SRC_DIRS) -name '*.c') server_socket.c ./src/window.c
 OBJS = $(SRCS:%=$(BUILD_DIR)/%.o)
 
 #CC specifies wich compiler we're using
